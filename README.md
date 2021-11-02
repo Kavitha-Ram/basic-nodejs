@@ -1,2 +1,2 @@
-# basic-nodejs
-Base project nodejs challenge
+# santa-node-challenge
+Basic Nodejs challenge
