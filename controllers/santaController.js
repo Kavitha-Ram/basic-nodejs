@@ -4,17 +4,15 @@ const { default: axios } = require('axios');
 
 exports.sendMessageToSanta = async (req, res) => {
   const { username, gifts } = req.body;
+  let array = [];
   try {
     const usersDB = await axios.get(process.env.USERSDB);
     const user = usersDB.data.find((user) => user.username === username);
-
     if (user) {
       const userProfilesDB = await axios.get(process.env.USERSPROFILE);
-
       const userProfiles = userProfilesDB.data.find(
         (userProfile) => user.uid === userProfile.userUid
       );
-
       if (userProfiles) {
         let age = moment().diff(
           moment(userProfiles.birthdate, 'YYYY/MM/DD').toISOString(),
@@ -23,7 +21,7 @@ exports.sendMessageToSanta = async (req, res) => {
         if (age > 10) {
           return res.render('result', {
             message:
-              'Kids below 10 years old are applicable to send message to Santa!!!',
+              'You are not eligible to register for this event since your age is above 10!',
           });
         }
       }
@@ -32,15 +30,51 @@ exports.sendMessageToSanta = async (req, res) => {
         gifts: gifts,
         address: userProfiles.address,
       };
-
-      let data = JSON.stringify(children);
+      // console.log(children);
+      array.push(JSON.stringify(children));
       if (fs.existsSync('santaMail.json')) {
-        fs.appendFileSync('santaMail.json', data);
+        fs.readFile('santaMail.json', 'utf8', async (err, data) => {
+          let santaList = JSON.parse(data);
+          if (santaList.length > 0) {
+            santaList.map((child) => {
+              array.push(child);
+              fs.writeFileSync(
+                'santaMail.json',
+                JSON.stringify(array),
+                function (err) {
+                  if (err) {
+                    console.log(err);
+                  }
+                }
+              );
+            });
+          } else {
+            fs.writeFileSync(
+              'santaMail.json',
+              JSON.stringify(array),
+              function (err) {
+                if (err) {
+                  console.log(err);
+                }
+              }
+            );
+          }
+         
+        });
       } else {
-        fs.writeFileSync('santamail.json', data);
+        fs.writeFileSync(
+          'santaMail.json',
+          JSON.stringify(array),
+          function (err) {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
       }
-      return res.render('result', {
-        message: 'Hurray your message has been sent to Santa!!!',
+
+      return res.render("result", {
+        message: "Hurray your message has been sent to Santa!!!",
       });
     } else {
       return res.render('result', {

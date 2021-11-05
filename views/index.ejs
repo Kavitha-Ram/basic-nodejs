@@ -20,41 +20,48 @@
   </head>
 
   <body>
-    <header>
-      <h1>A letter to Santa</h1>
-    </header>
+    <div class="homepage">
+      <div class="homepage__container">
+        <div class="homepage__split">
+          <div class="homepage__left">
+            <img src="https://cdn.glitch.me/ab111d34-8d60-4e43-9148-61771d0e5203%2Fsanta.svg?v=1636081410235" alt="santa" />
+          </div>
+          <div class="homepage__right">
+            <h2 class="homepage__header">
+              Ho ho ho, what you want for christmas?
+            </h2>
 
-    <main>
-      <p class="bold">Ho ho ho, what you want for christma?</p>
-
-      who are you?
-
-      <form method="POST" action="/api/sendMessage">
-        <input name="username" placeholder="Enter your name" />
-        what do you want for christmas?
-        <textarea
-          name="gifts"
-          rows="10"
-          cols="45"
-          maxlength="100"
-          placeholder="Gifts!"
-        ></textarea>
-        <br />
-        <button type="submit" id="submit-letter">Send</button>
-      </form>
-    </main>
-
-    <footer>
-      Made with
-      <a href="https://glitch.com">Glitch</a>!
-    </footer>
-
-    <!-- include the Glitch button to show what the webpage is about and
-          to make it easier for folks to view source and remix -->
-    <div
-      class="glitchButton"
-      style="position: fixed; top: 20px; right: 20px"
-    ></div>
+            <form method="POST" action="/api/sendMessage">
+              <div class="homepage__form">
+                <label for="name" class="form__label">Name</label>
+                <input
+                  name="username"
+                  placeholder="Enter your name"
+                  class="form__input"
+                />
+                <label for="gifts" class="form__label">Gifts</label>
+                <textarea
+                  name="gifts"
+                  rows="10"
+                  cols="45"
+                  maxlength="100"
+                  placeholder="Gifts!"
+                  class="form__input"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="custom form__button"
+                id="submit-letter"
+              >
+                Send
+              </button>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
     <script src="/js/client.js" defer></script>
     <script src="https://button.glitch.me/button.js"></script>
   </body>
